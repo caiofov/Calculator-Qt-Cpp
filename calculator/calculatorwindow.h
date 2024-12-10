@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QRegularExpression>
+#include <cmath>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

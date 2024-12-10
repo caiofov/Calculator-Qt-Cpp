@@ -1,11 +1,14 @@
 #include "calculatorwindow.h"
 #include "./ui_calculatorwindow.h"
+#include <iostream>
 
 double calcVal = 0.0;
 bool divTrigger = false;
 bool multTrigger = false;
 bool addTrigger = false;
 bool subTrigger = false;
+bool modTrigger = false;
+
 
 
 CalculatorWindow::CalculatorWindow(QWidget *parent)
@@ -29,6 +32,7 @@ CalculatorWindow::CalculatorWindow(QWidget *parent)
     connect(ui->Subtract, SIGNAL(released()), this, SLOT(MathButtonPressed()));
     connect(ui->Divide, SIGNAL(released()), this, SLOT(MathButtonPressed()));
     connect(ui->Multiply, SIGNAL(released()), this, SLOT(MathButtonPressed()));
+    connect(ui->Module, SIGNAL(released()), this, SLOT(MathButtonPressed()));
 
     connect(ui->Equals, SIGNAL(released()), this, SLOT(EqualButtonPressed()));
 
@@ -58,6 +62,7 @@ void CalculatorWindow::MathButtonPressed(){
     multTrigger = false;
     addTrigger = false;
     subTrigger = false;
+    modTrigger = false;
 
     QString displayValue = ui->Display->text();
     calcVal = displayValue.toDouble();
@@ -74,8 +79,11 @@ void CalculatorWindow::MathButtonPressed(){
     else if(QString::compare(buttonValue, "+", Qt::CaseInsensitive) == 0){
         addTrigger = true;
     }
-    else { // if(QString::compare(buttonValue, "-", Qt::CaseInsensitive) == 0)
+    else if(QString::compare(buttonValue, "-", Qt::CaseInsensitive) == 0){
         subTrigger = true;
+    }
+    else if(QString::compare(buttonValue, "%", Qt::CaseInsensitive) == 0){
+        modTrigger = true;
     }
 
     ui->Display->setText("");
@@ -85,7 +93,7 @@ void CalculatorWindow::EqualButtonPressed(){
     double solution = 0.0;
     double displayValue = ui->Display->text().toDouble();
 
-    if(addTrigger || divTrigger || multTrigger ||subTrigger){
+    if(addTrigger || divTrigger || multTrigger || subTrigger || modTrigger){
         if(addTrigger){
             solution = calcVal + displayValue;
         }
@@ -95,8 +103,11 @@ void CalculatorWindow::EqualButtonPressed(){
         else if(multTrigger){
             solution = calcVal * displayValue;
         }
-        else{
+        else if(divTrigger){
             solution = calcVal / displayValue;
+        }
+        else if(modTrigger){
+            solution = fmod(calcVal , displayValue);
         }
     }
 
