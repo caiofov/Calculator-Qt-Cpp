@@ -26,6 +26,7 @@ private slots:
     void NumPressed();
     void MathButtonPressed();
     void EqualButtonPressed();
+    void DecimalButtonPressed();
     void ChangeNumberSign();
     void ClearButtonPressed();
 

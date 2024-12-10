@@ -34,6 +34,8 @@ CalculatorWindow::CalculatorWindow(QWidget *parent)
         connect(numButtons[i], SIGNAL(released()), this, SLOT(NumPressed()));
     }
 
+    connect(ui->Decimal, SIGNAL(released()), this, SLOT(DecimalButtonPressed()));
+
     connect(ui->Add, SIGNAL(released()), this, SLOT(MathButtonPressed()));
     connect(ui->Subtract, SIGNAL(released()), this, SLOT(MathButtonPressed()));
     connect(ui->Divide, SIGNAL(released()), this, SLOT(MathButtonPressed()));
@@ -139,4 +141,12 @@ void CalculatorWindow::ClearButtonPressed(){
     ui->Display->setText(QString::number(calcVal));
 
     initMathTriggers();
+}
+
+
+void CalculatorWindow::DecimalButtonPressed(){
+    QString currentValue = ui->Display->text();
+    if(!currentValue.contains(".")){
+        ui->Display->setText( currentValue + ".");
+    }
 }
