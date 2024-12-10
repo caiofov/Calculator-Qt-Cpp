@@ -1,6 +1,5 @@
 #include "calculatorwindow.h"
 #include "./ui_calculatorwindow.h"
-#include <iostream>
 
 double calcVal = 0.0;
 bool divTrigger = false;
@@ -10,6 +9,13 @@ bool subTrigger = false;
 bool modTrigger = false;
 
 
+void initMathTriggers(){
+    divTrigger = false;
+    multTrigger = false;
+    addTrigger = false;
+    subTrigger = false;
+    modTrigger = false;
+}
 
 CalculatorWindow::CalculatorWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,6 +43,9 @@ CalculatorWindow::CalculatorWindow(QWidget *parent)
     connect(ui->Equals, SIGNAL(released()), this, SLOT(EqualButtonPressed()));
 
     connect(ui->ChangeSign, SIGNAL(released()), this, SLOT(ChangeNumberSign()));
+
+    connect(ui->Clear, SIGNAL(released()), this, SLOT(ClearButtonPressed()));
+
 }
 
 CalculatorWindow::~CalculatorWindow()
@@ -58,11 +67,7 @@ void CalculatorWindow::NumPressed(){
 }
 
 void CalculatorWindow::MathButtonPressed(){
-    divTrigger = false;
-    multTrigger = false;
-    addTrigger = false;
-    subTrigger = false;
-    modTrigger = false;
+    initMathTriggers();
 
     QString displayValue = ui->Display->text();
     calcVal = displayValue.toDouble();
@@ -127,4 +132,11 @@ void CalculatorWindow::ChangeNumberSign(){
 
         ui->Display->setText(QString::number(dblDisplayValSign));
     }
+}
+
+void CalculatorWindow::ClearButtonPressed(){
+    calcVal = 0.0;
+    ui->Display->setText(QString::number(calcVal));
+
+    initMathTriggers();
 }

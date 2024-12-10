@@ -27,5 +27,7 @@ private slots:
     void MathButtonPressed();
     void EqualButtonPressed();
     void ChangeNumberSign();
+    void ClearButtonPressed();
+
 };
 #endif // CALCULATORWINDOW_H
