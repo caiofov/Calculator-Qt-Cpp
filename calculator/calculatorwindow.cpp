@@ -1,21 +1,10 @@
 #include "calculatorwindow.h"
 #include "./ui_calculatorwindow.h"
+#include "operation.h"
 
 double calcVal = 0.0;
-bool divTrigger = false;
-bool multTrigger = false;
-bool addTrigger = false;
-bool subTrigger = false;
-bool modTrigger = false;
+Operation lastOperation = Operation::NONE;
 
-
-void initMathTriggers(){
-    divTrigger = false;
-    multTrigger = false;
-    addTrigger = false;
-    subTrigger = false;
-    modTrigger = false;
-}
 
 CalculatorWindow::CalculatorWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -69,7 +58,7 @@ void CalculatorWindow::NumPressed(){
 }
 
 void CalculatorWindow::MathButtonPressed(){
-    initMathTriggers();
+    lastOperation = Operation::NONE;
 
     QString displayValue = ui->Display->text();
     calcVal = displayValue.toDouble();
@@ -77,46 +66,18 @@ void CalculatorWindow::MathButtonPressed(){
     QPushButton *button = (QPushButton *)sender();
     QString buttonValue = button->text();
 
-    if(QString::compare(buttonValue, "/", Qt::CaseInsensitive) == 0){
-        divTrigger = true;
-    }
-    else if(QString::compare(buttonValue, "*", Qt::CaseInsensitive) == 0){
-        multTrigger = true;
-    }
-    else if(QString::compare(buttonValue, "+", Qt::CaseInsensitive) == 0){
-        addTrigger = true;
-    }
-    else if(QString::compare(buttonValue, "-", Qt::CaseInsensitive) == 0){
-        subTrigger = true;
-    }
-    else if(QString::compare(buttonValue, "%", Qt::CaseInsensitive) == 0){
-        modTrigger = true;
-    }
+    lastOperation = stringToOperationEnum(buttonValue);
 
     ui->Display->setText("");
 }
 
 void CalculatorWindow::EqualButtonPressed(){
+    if(lastOperation == Operation::NONE){
+        return;
+    }
     double solution = 0.0;
     double displayValue = ui->Display->text().toDouble();
-
-    if(addTrigger || divTrigger || multTrigger || subTrigger || modTrigger){
-        if(addTrigger){
-            solution = calcVal + displayValue;
-        }
-        else if(subTrigger){
-            solution = calcVal - displayValue;
-        }
-        else if(multTrigger){
-            solution = calcVal * displayValue;
-        }
-        else if(divTrigger){
-            solution = calcVal / displayValue;
-        }
-        else if(modTrigger){
-            solution = fmod(calcVal , displayValue);
-        }
-    }
+    solution = performOperation(lastOperation, calcVal, displayValue);
 
     ui->Display->setText(QString::number(solution));
     calcVal = solution;
@@ -140,7 +101,7 @@ void CalculatorWindow::ClearButtonPressed(){
     calcVal = 0.0;
     ui->Display->setText(QString::number(calcVal));
 
-    initMathTriggers();
+    lastOperation = Operation::NONE;
 }
 
 
