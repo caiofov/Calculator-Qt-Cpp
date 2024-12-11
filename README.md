@@ -20,4 +20,5 @@ A calculator application built in C++ using the Qt framework. This project is in
 ## Future updates
 - Support for **successive operations** without requiring the result button.
 - Implementation of **memory buttons** for storing and recalling values.
+- Enable number entry via keyboard input.
 
