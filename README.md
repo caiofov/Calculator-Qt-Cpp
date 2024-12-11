@@ -10,7 +10,7 @@ A calculator application built in C++ using the Qt framework. This project is in
 - Subtraction
 - Division
 - Multiplication
-- Modulp
+- Modulo
 
 ### Additional functionalities
 - Support for decimal numbers
